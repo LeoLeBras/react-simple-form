@@ -1,4 +1,7 @@
 /* @flow */
+/* eslint-disable */
 
-export { default as Form } from './src/components/Form/index.js'
-export { default as withField } from './src/helpers/withField.js'
+const Form = require('./lib/components/Form/index.js').default
+const withField = require('./lib/helpers/withField.js').default
+
+module.exports = { Form, withField }
