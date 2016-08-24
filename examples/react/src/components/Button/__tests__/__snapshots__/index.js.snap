@@ -1,0 +1,6 @@
+exports[`<Button /> component renders correctly 1`] = `
+<button
+  onClick={[Function onClick]}>
+  Submit
+</button>
+`;
