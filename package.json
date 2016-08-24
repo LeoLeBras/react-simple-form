@@ -1,6 +1,6 @@
 {
   "name": "react-simple-form",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "description": "A complete form library for React.js and React Native",
   "main": "index.js",
   "keywords": [
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha 'src/**/__tests__/*.spec.js' --compilers js:babel-core/register",
-    "compile": "babel -d lib/ src/",
+    "compile": "babel -d lib/ ./src/",
     "prepublish": "npm run compile"
   },
   "author": "Léo Le Bras <leo.lebrasf@gmail.com> (https://github.com/LeoLeBras/)",
