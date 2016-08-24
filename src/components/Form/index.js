@@ -10,6 +10,7 @@ import type { FormAction, FormState, FormField, FormResponse, FormContext } from
 const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT } = actionTypes
 
 type Props = {
+  className: string,
   children?: React$Element<any>,
   initialValues: { [name: string]: string },
   reducer: () => { action: FormAction, state: FormState },
@@ -26,7 +27,7 @@ class Form extends Component {
 
   // Initialize a field
   onInitialyze = (field: FormField) => {
-    const { initialValues } = this.props
+    const initialValues = this.props.initialValues || {}
     const { name } = field
     const value = initialValues[name] || null
     this.dispatch({
@@ -150,13 +151,14 @@ class Form extends Component {
 
   // Render <Form /> component without parsing anything
   render() {
-    const { children } = this.props
+    const { children, className } = this.props
     return (
       <form
         onSubmit={(e) => {
           e.preventDefault()
           return false
         }}
+        className={className}
       >
         {children}
       </form>
