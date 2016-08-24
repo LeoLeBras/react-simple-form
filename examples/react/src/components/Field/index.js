@@ -25,4 +25,4 @@ const Field = (props) => {
   )
 }
 
-export default withField(Field, { errorMessages })
+export default withField(Field)
