@@ -1,46 +1,4 @@
-/* eslint-disable */
+/* @flow */
 
-// Method 1
-
-class MyComponent extends Component {
-
-  constructor() {
-    this.state = {
-      foo: 'foo',
-    }
-  }
-
-  // ...
-
-}
-
-
-
-// Method 2
-
-class MyComponent extends Component {
-
-  state = {
-      foo: 'foo',
-    }
-  }
-
-  // ...
-
-}
-
-
-
-// Method 3
-
-const MyComponent = React.createClass({
-
-  getInitialState: function() {
-    return {
-      foo: 'foo',
-    }
-  }
-
-  // ...
-
-})
+export { default as Form } from './src/components/Form/index.js'
+export { default as withField } from './src/helpers/withField.js'

@@ -1,6 +1,7 @@
 /* @flow */
+/* eslint no-param-reassign: 0 */
 
-import type { FormAction, FormField, FormState } from './../types'
+import type { FormAction, FormState } from './../types'
 import * as actionTypes from './actionTypes'
 
 const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT } = actionTypes
@@ -33,7 +34,7 @@ export default function (state: FormState = initialState, action: FormAction): F
         formState: Object.keys(state.formState)
           .map((name) => ({
             ...state.formState[name],
-            value: values[name] || state.formState[name].value
+            value: values[name] || state.formState[name].value,
           }))
           .reduce((form, field) => {
             form[field.name] = field

@@ -24,6 +24,7 @@
 .*/node_modules/react/lib/ReactDOM.js
 
 .*/node_modules/react-native/Libraries
+.*/node_modules/react-native/lib
 
 .*/__mocks__/.*
 .*/__tests__/.*
@@ -44,6 +45,7 @@
 
 # Ignore generators
 .*/local-cli/generator.*
+.*/local-cli/commands.*
 
 # Ignore BUCK generated folders
 .*\.buckd/

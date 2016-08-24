@@ -5,7 +5,8 @@ export type FormStatus = 'pending' | 'success' | 'failure'
 export type FormField = {
   component: React$Element<any>,
   name: string,
-  value: string,
+  value: string | null,
+  validator: { [key: name]: (field: FormField) => boolean },
   errors: Array<string>,
   hasBeenFocused: boolean,
   isFocused: boolean,
@@ -23,7 +24,7 @@ export type FormAction = Object & {
 export type FormResponse = {
   status: string,
   formState: FormState,
-  values: { [name: string]: string },
+  values: { [name: string]: string | null },
 }
 
 export type FormContext = {

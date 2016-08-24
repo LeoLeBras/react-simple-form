@@ -5,14 +5,14 @@ import _ from 'lodash'
 import { getFormStatus, getFormValues, getFormErrors } from './../../utils'
 import formReducer from './../../module/reducer'
 import * as actionTypes from './../../module/actionTypes'
-import type { FormProps, FormState, FormField, FormResponse, FormContext } from './../../types'
+import type { FormAction, FormState, FormField, FormResponse, FormContext } from './../../types'
 
 const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT } = actionTypes
 
 type Props = {
   children?: React$Element<any>,
   initialValues: { [name: string]: string },
-  onDispatch: () => { action: FormAction, state: FormState },
+  reducer: () => { action: FormAction, state: FormState },
 }
 
 class Form extends Component {
@@ -80,9 +80,9 @@ class Form extends Component {
     return new Promise(
       async (resolve, reject) => {
         const status = getFormStatus({ ...this.state })
+        const form = _.cloneDeep(this.state)
+        const { formState } = form
         if (status === 'success') {
-          const form = _.cloneDeep(this.state)
-          const { formState } = form
           const values = getFormValues(form)
           const response = { status, formState, values }
           this.dispatch({
@@ -113,7 +113,7 @@ class Form extends Component {
   dispatch = (action: FormAction): void => {
     const { reducer } = this.props
     const state = formReducer(
-      this.state || { status: 'pending', formState: {}},
+      this.state || { status: 'pending', formState: {} },
       action,
     )
     if (reducer) reducer(action, state)
@@ -146,7 +146,6 @@ class Form extends Component {
       },
     }
   }
-
 
 
   // Render <Form /> component without parsing anything

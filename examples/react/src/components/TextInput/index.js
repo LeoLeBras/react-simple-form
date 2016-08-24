@@ -1,3 +1,6 @@
+/* eslint max-len: 0 */
+/* eslint no-console: 0 */
+
 import React from 'react'
 
 const TextInput = (props) => {

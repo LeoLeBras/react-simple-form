@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 import React, { Component } from 'react'
 import { Form } from 'react-simple-form'
 import { isRequired } from './helpers/validator'

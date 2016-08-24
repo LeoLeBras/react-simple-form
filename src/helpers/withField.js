@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint max-len: 0 */
 
 import React, { Component, PropTypes } from 'react'
 import hoistStatics from 'hoist-non-react-statics'
@@ -20,7 +21,7 @@ export default function withField(WrappedField: () => React$Element<any>) {
     static WrappedField = WrappedField
 
     props: FormField
-    state: FormField = {}
+    state: FormField
 
     componentWillMount() {
       const hasBeenFocused = false
@@ -33,7 +34,6 @@ export default function withField(WrappedField: () => React$Element<any>) {
     }
 
     onChange = (value: string): void => {
-      const { name } = this.state
       const errors = getFieldErrors({ ...this.state, value })
       const field = { ...this.state, value, errors }
       this.context.form.onChange(field)
