@@ -30,12 +30,14 @@ class FormExample extends Component {
     }
   }
 
-
-  reducer = (action, state) => {
+  reducer = (state, action) => {
     console.log(`%c ${action.type}`, 'font-weight: bold; font-size: 16px;')
     console.log(state)
   }
 
+  getFormState = () => {
+    console.log(this.form.getState())
+  }
 
   render() {
     return (
@@ -65,6 +67,9 @@ class FormExample extends Component {
           validator={{ isRequired }}
           component={TextInput}
         />
+        <Button onClick={this.getFormState}>
+          Get form state
+        </Button>
         <Button onClick={this.onSubmit}>
           Submit
         </Button>

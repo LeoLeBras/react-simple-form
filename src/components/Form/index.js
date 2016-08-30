@@ -117,7 +117,7 @@ class Form extends Component {
       this.state || { status: 'pending', formState: {} },
       action,
     )
-    if (reducer) reducer(action, state)
+    if (reducer) reducer(state, action)
     this.state = state
     if (action.force) this.forceUpdateFields()
   }
@@ -130,6 +130,12 @@ class Form extends Component {
     this.timer = setTimeout(() => {
       this.forceUpdate()
     }, 10)
+  }
+
+
+  // Return form state
+  getState = (): Object => {
+    return this.state.formState
   }
 
 
