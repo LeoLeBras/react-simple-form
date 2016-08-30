@@ -1,6 +1,6 @@
 {
   "name": "react-simple-form",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "A complete form library for React.js and React Native",
   "main": "index.js",
   "keywords": [
