@@ -13,7 +13,7 @@ const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT 
 type Props = {
   children?: React$Element<any>,
   initialValues: { [name: string]: string },
-  keyboardAvoidingViewRef: React$Element<any>,
+  contentOffset?: number,
   reducer: () => { action: FormAction, state: FormState },
 }
 

@@ -12,6 +12,7 @@ const isReactNative = navigator.product === 'ReactNative'
 type Props = {
   className?: string,
   style?: StyleSheet,
+  contentOffset?: number,
   children?: React$Element<any>,
 }
 
@@ -37,14 +38,14 @@ class WrappedForm extends Component {
   }
 
   dispatch = (action: Object): void => {
-    console.log(action)
     if (action.type === FOCUS_FIELD && isReactNative) {
+      const { contentOffset } = this.props
       const { ref } = action.field
       const { findNodeHandle } = require('react-native')
       const scrollResponder = this.scrollView.getScrollResponder()
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
         findNodeHandle(ref),
-        10,
+        contentOffset || 10,
         true
       )
     }
