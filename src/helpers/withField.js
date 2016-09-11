@@ -33,6 +33,13 @@ export default function withField(WrappedField: () => React$Element<any>) {
       this.context.form.onInitialyze(field)
     }
 
+    componentDidMount() {
+      const ref = this.ref
+      const field = { ...this.state, ref }
+      this.context.form.onChange(field)
+      this.setState(field)
+    }
+
     onChange = (value: string): void => {
       const errors = getFieldErrors({ ...this.state, value })
       const field = { ...this.state, value, errors }
@@ -61,10 +68,10 @@ export default function withField(WrappedField: () => React$Element<any>) {
       if (value !== this.state.value) this.onChange(value)
     }
 
-
     shouldComponentUpdate(nextProps: FormField, nextState: FormField, nextContext: { form: FormContext }) {
       return (
         !_.isEqual(this.state, nextState) ||
+        !_.isEqual(Object.keys(this.context.form.formState, Object.keys(nextContext.form.formState))) ||
         this.context.form.status !== nextContext.form.status
       )
     }
@@ -75,6 +82,7 @@ export default function withField(WrappedField: () => React$Element<any>) {
           {...this.props}
           {...this.state}
           {...this.context}
+          ref={(c) => this.ref = c}
           onChange={this.onChange}
           onFocus={this.onFocus}
           onBlur={this.onBlur}

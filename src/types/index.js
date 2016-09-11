@@ -4,6 +4,7 @@ export type FormStatus = 'pending' | 'success' | 'failure'
 
 export type FormField = {
   component: React$Element<any>,
+  ref: Object,
   name: string,
   value: string | null,
   validator: { [key: name]: (field: FormField) => boolean },
@@ -30,8 +31,10 @@ export type FormResponse = {
 export type FormContext = {
   status: FormStatus,
   formState: FormState,
+  keyboardAvoidingViewRef: React$Element<any>,
   onInitialyze: (field: FormField) => void,
   onChange: (field: FormField) => void,
   onFocus: (field: FormField) => void,
   onBlur: (field: FormField) => void,
+  onSubmit: () => Promise<FormResponse>,
 }

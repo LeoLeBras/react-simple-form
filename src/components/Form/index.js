@@ -5,14 +5,15 @@ import _ from 'lodash'
 import { getFormStatus, getFormValues, getFormErrors } from './../../utils'
 import formReducer from './../../module/reducer'
 import * as actionTypes from './../../module/actionTypes'
+import WrappedForm from './../WrappedForm'
 import type { FormAction, FormState, FormField, FormResponse, FormContext } from './../../types'
 
 const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT } = actionTypes
 
 type Props = {
-  className: string,
   children?: React$Element<any>,
   initialValues: { [name: string]: string },
+  keyboardAvoidingViewRef: React$Element<any>,
   reducer: () => { action: FormAction, state: FormState },
 }
 
@@ -117,6 +118,7 @@ class Form extends Component {
       this.state || { status: 'pending', formState: {} },
       action,
     )
+    if (this.wrapper) this.wrapper.dispatch(action)
     if (reducer) reducer(state, action)
     this.state = state
     if (action.force) this.forceUpdateFields()
@@ -146,28 +148,27 @@ class Form extends Component {
       form: {
         status: this.state.status,
         formState: this.state.formState,
+        keyboardAvoidingViewRef: this.props.keyboardAvoidingViewRef,
         onInitialyze: this.onInitialyze,
         onChange: this.onChange,
         onFocus: this.onFocus,
         onBlur: this.onBlur,
+        onSubmit: this.onSubmit,
       },
     }
   }
 
 
-  // Render <Form /> component without parsing anything
+  // Render <Form /> component
   render() {
-    const { children, className } = this.props
+    const { children, ...props } = this.props
     return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          return false
-        }}
-        className={className}
+      <WrappedForm
+        {...props}
+        ref={(c) => this.wrapper = c}
       >
         {children}
-      </form>
+      </WrappedForm>
     )
   }
 
