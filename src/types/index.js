@@ -32,7 +32,7 @@ export type FormContext = {
   status: FormStatus,
   formState: FormState,
   keyboardAvoidingViewRef: React$Element<any>,
-  initialValues: [key: string]: string,
+  initialValues: { [key: string]: string },
   onInitialyze: (field: FormField) => void,
   onChange: (field: FormField) => void,
   onFocus: (field: FormField) => void,
