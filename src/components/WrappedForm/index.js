@@ -39,15 +39,16 @@ class WrappedForm extends Component {
 
   dispatch = (action: Object): void => {
     if (action.type === FOCUS_FIELD && isReactNative) {
-      const { contentOffset } = this.props
       const { ref } = action.field
-      const { findNodeHandle } = require('react-native')
-      const scrollResponder = this.scrollView.getScrollResponder()
-      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-        findNodeHandle(ref),
-        contentOffset || 10,
-        true
-      )
+      if (ref) {
+        const { findNodeHandle } = require('react-native')
+        const scrollResponder = this.scrollView.getScrollResponder()
+        scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+          findNodeHandle(ref),
+          this.props.contentOffset || 10,
+          true
+        )
+      }
     }
   }
 
@@ -61,17 +62,19 @@ class WrappedForm extends Component {
         TouchableWithoutFeedback,
       } = require('react-native')
       return (
-        <ScrollView
-          ref={(c) => this.scrollView = c}
-          bounces={false}
-          keyboardShouldPersistTaps={true}
-        >
-          <TouchableWithoutFeedback onPress={dismissKeyboard}>
-            <View style={style}>
-              {children}
-            </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
+        <View>
+          <ScrollView
+            ref={(c) => this.scrollView = c}
+            bounces={false}
+            keyboardShouldPersistTaps={true}
+          >
+            <TouchableWithoutFeedback onPress={dismissKeyboard}>
+              <View style={style}>
+                {children}
+              </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </View>
       )
     }
     return (
