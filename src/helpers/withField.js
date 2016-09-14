@@ -24,9 +24,11 @@ export default function withField(WrappedField: () => React$Element<any>) {
     state: FormField
 
     componentWillMount() {
+      const { initialValues } = this.context.form
+      const { name } = this.props
       const hasBeenFocused = false
       const isFocused = false
-      const value = this.props.value || null
+      const value = this.props.value || initialValues[name] || null
       const errors = getFieldErrors({ ...this.props, value })
       const field = { ...this.props, value, errors, hasBeenFocused, isFocused }
       this.state = field
