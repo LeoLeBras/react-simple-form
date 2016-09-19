@@ -12,8 +12,8 @@ const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT 
 
 type Props = {
   children?: React$Element<any>,
-  initialValues: { [name: string]: string },
-  reducer: () => { action: FormAction, state: FormState },
+  initialValues?: { [name: string]: string },
+  reducer?: () => { action: FormAction, state: FormState },
 }
 
 class Form extends Component {
@@ -77,7 +77,7 @@ class Form extends Component {
 
   // Submit form. This method is accessible only
   // with ref
-  onSubmit = (): Promise<FormResponse> => {
+  submit = (): Promise<FormResponse> => {
     return new Promise(
       async (resolve, reject) => {
         const status = getFormStatus({ ...this.state })
@@ -147,13 +147,13 @@ class Form extends Component {
       form: {
         status: this.state.status,
         formState: this.state.formState,
-        initialValues: this.props.initialValues,
+        initialValues: this.props.initialValues || {},
         keyboardAvoidingViewRef: this.props.keyboardAvoidingViewRef,
         onInitialyze: this.onInitialyze,
         onChange: this.onChange,
         onFocus: this.onFocus,
         onBlur: this.onBlur,
-        onSubmit: this.onSubmit,
+        submit: this.submit,
       },
     }
   }
