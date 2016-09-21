@@ -6,9 +6,9 @@ import { getFormStatus, getFormValues, getFormErrors } from './../../utils'
 import formReducer from './../../module/reducer'
 import * as actionTypes from './../../module/actionTypes'
 import WrappedForm from './../WrappedForm'
-import type { FormAction, FormState, FormField, FormResponse, FormContext } from './../../types'
+import type { FormAction, FormState, FormResponse, FormContext } from './../../types'
 
-const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD, UPDATE, SUBMIT } = actionTypes
+const { UPDATE, SUBMIT } = actionTypes
 
 type Props = {
   children?: React$Element<any>,
@@ -25,52 +25,11 @@ class Form extends Component {
   }
 
 
-  // Initialize a field
-  onInitialyze = (field: FormField) => {
-    const initialValues = this.props.initialValues || {}
-    const { name } = field
-    const value = initialValues[name] || null
-    this.dispatch({
-      type: INITIALYZE_FIELD,
-      field: { ...field, value },
-      force: true,
-    })
-  }
-
-
-  // Change a field
-  onChange = (field: FormField) => {
-    this.dispatch({
-      type: CHANGE_FIELD,
-      field,
-    })
-  }
-
-
-  // Focus a field
-  onFocus = (field: FormField) => {
-    this.dispatch({
-      type: FOCUS_FIELD,
-      field,
-    })
-  }
-
-
-  // Blur a field
-  onBlur = (field: FormField) => {
-    this.dispatch({
-      type: BLUR_FIELD,
-      field,
-    })
-  }
-
-
   // Update values in all fields
-  onUpdateValues = (values: { [name: string]: string }): void => {
+  updateValues = (values: { [name: string]: string }): void => {
     this.dispatch({
       type: UPDATE,
       values,
-      force: true,
     })
   }
 
@@ -89,7 +48,6 @@ class Form extends Component {
           this.dispatch({
             type: SUBMIT,
             response,
-            force: true,
           })
           resolve(response)
         } else {
@@ -101,7 +59,6 @@ class Form extends Component {
           this.dispatch({
             type: SUBMIT,
             response,
-            force: true,
           })
           reject(response)
         }
@@ -118,19 +75,9 @@ class Form extends Component {
       action,
     )
     if (this.wrapper) this.wrapper.dispatch(action)
-    if (reducer) reducer(state, action)
-    this.state = state
-    if (action.force) this.forceUpdateFields()
-  }
-
-
-  // Update all fields
-  timer: any = null
-  forceUpdateFields = () => {
+    this.state = reducer ? reducer(state, action) : state
     clearTimeout(this.timer)
-    this.timer = setTimeout(() => {
-      this.forceUpdate()
-    }, 10)
+    this.timer = setTimeout(() => this.forceUpdate(), 10)
   }
 
 
@@ -153,6 +100,7 @@ class Form extends Component {
         onChange: this.onChange,
         onFocus: this.onFocus,
         onBlur: this.onBlur,
+        dispatch: this.dispatch,
         submit: this.submit,
       },
     }

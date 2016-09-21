@@ -62,7 +62,7 @@ class WrappedForm extends Component {
         TouchableWithoutFeedback,
       } = require('react-native')
       return (
-        <View>
+        <View style={{ flex: 1 }}>
           <ScrollView
             ref={(c) => this.scrollView = c}
             bounces={false}

@@ -1,4 +1,5 @@
 /* @flow */
 
-export { default as Form } from './src/components/Form'
-export { default as withField } from './src/helpers/withField'
+export Form from './src/components/Form'
+export withField from './src/helpers/withField'
+export dismissKeyboard from './src/helpers/dismissKeyboard'

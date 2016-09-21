@@ -4,12 +4,15 @@
 import React, { Component, PropTypes } from 'react'
 import hoistStatics from 'hoist-non-react-statics'
 import _ from 'lodash'
+import * as actionTypes from './../module/actionTypes'
 import type { FormField, FormContext } from './../types'
 import { getFieldErrors } from './../utils'
 
 function getDisplayName(WrappedField: () => React$Element<any>) {
   return WrappedField.displayName || WrappedField.name || 'Field'
 }
+
+const { INITIALYZE_FIELD, CHANGE_FIELD, FOCUS_FIELD, BLUR_FIELD } = actionTypes
 
 export default function withField(WrappedField: () => React$Element<any>) {
   class WithField extends Component {
@@ -29,51 +32,74 @@ export default function withField(WrappedField: () => React$Element<any>) {
       const hasBeenFocused = false
       const isFocused = false
       const value = this.props.value || initialValues[name] || null
-      const errors = getFieldErrors({ ...this.props, value })
+      const errors = getFieldErrors(
+        { ...this.props, value },
+        this.context.form,
+      )
       const field = { ...this.props, value, errors, hasBeenFocused, isFocused }
-      this.state = field
-      this.context.form.onInitialyze(field)
+      this.dispatch({
+        type: INITIALYZE_FIELD,
+        field,
+      })
     }
 
     componentDidMount() {
       const ref = this.ref
       const field = { ...this.state, ref }
-      this.context.form.onChange(field)
-      this.setState(field)
+      this.dispatch({
+        type: CHANGE_FIELD,
+        field,
+      })
     }
 
     onChange = (value: string): void => {
-      const errors = getFieldErrors({ ...this.state, value })
-      const field = { ...this.state, value, errors }
-      this.context.form.onChange(field)
-      this.setState(field)
+      const errors = getFieldErrors(
+        { ...this.state, value },
+        this.context.form,
+      )
+      if (value !== this.state.value || !_.isEqual(this.state.errors, errors)) {
+        const field = { ...this.state, value, errors }
+        this.dispatch({
+          type: CHANGE_FIELD,
+          field,
+          force: true,
+        })
+      }
     }
 
     onFocus = (): void => {
       const isFocused = true
       const field = { ...this.state, isFocused }
-      this.context.form.onFocus(field)
-      this.setState(field)
+      this.dispatch({
+        type: FOCUS_FIELD,
+        field,
+      })
     }
 
     onBlur = (): void => {
       const hasBeenFocused = true
       const isFocused = false
       const field = { ...this.state, hasBeenFocused, isFocused }
-      this.context.form.onBlur(field)
-      this.setState(field)
+      this.dispatch({
+        type: BLUR_FIELD,
+        field,
+      })
     }
 
-    componentWillReceiveProps(nextProps: FormField, nextContext: { form: FormContext }) {
-      const { name } = this.state
-      const { value } = nextContext.form.formState[name]
-      if (value !== this.state.value) this.onChange(value)
+    dispatch = (action) => {
+      this.context.form.dispatch(action)
+      this.state = action.field
+      if (action.force) this.forceUpdate()
     }
 
     shouldComponentUpdate(nextProps: FormField, nextState: FormField, nextContext: { form: FormContext }) {
+      const { name } = this.state
+      const field = this.context.form.formState[name]
+      const nextField = nextContext.form.formState[name]
       return (
-        !_.isEqual(this.state, nextState) ||
-        !_.isEqual(Object.keys(this.context.form.formState, Object.keys(nextContext.form.formState))) ||
+        this.state.value !== nextState.value ||
+        !_.isEqual(field, nextField) ||
+        !_.isEqual(Object.keys(this.context.form.formState), Object.keys(nextContext.form.formState)) ||
         this.context.form.status !== nextContext.form.status
       )
     }

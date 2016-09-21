@@ -7,13 +7,13 @@ type FieldErrors = Array<string>
 
 // Return field errors by checking
 // validator prop
-export function getFieldErrors(field: FormField): FieldErrors {
+export function getFieldErrors(field: FormField, form: FormState, ...payload): FieldErrors {
   return Object.keys(field.validator || {})
     .map((rule) => ({
       name: rule,
       func: field.validator[rule],
     }))
-    .filter((rule) => !rule.func(field))
+    .filter((rule) => !rule.func(field, form, payload))
     .map((rule) => rule.name)
 }
 
@@ -23,7 +23,7 @@ export const getFormErrors = (form: FormState): {[name: string]: FieldErrors} =>
   Object.keys(form.formState)
     .map((key) => {
       const field = form.formState[key]
-      const errors = field.errors || getFieldErrors(field)
+      const errors = field.errors || getFieldErrors(field, form)
       return { [key]: errors }
     })
     .filter((field) => {
