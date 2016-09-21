@@ -11,6 +11,7 @@ const isReactNative = navigator.product === 'ReactNative'
 
 type Props = {
   className?: string,
+  containerStyle?: StyleSheet,
   style?: StyleSheet,
   contentOffset?: number,
   children?: React$Element<any>,
@@ -53,7 +54,7 @@ class WrappedForm extends Component {
   }
 
   render() {
-    const { className, style } = this.props
+    const { className, containerStyle, style } = this.props
     const children = this.props.children || null
     if (isReactNative) {
       const {
@@ -62,7 +63,7 @@ class WrappedForm extends Component {
         TouchableWithoutFeedback,
       } = require('react-native')
       return (
-        <View style={{ flex: 1 }}>
+        <View style={containerStyle}>
           <ScrollView
             ref={(c) => this.scrollView = c}
             bounces={false}
