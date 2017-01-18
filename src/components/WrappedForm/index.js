@@ -42,13 +42,15 @@ class WrappedForm extends Component {
     if (action.type === FOCUS_FIELD && isReactNative) {
       const { ref } = action.field
       if (ref) {
-        const { findNodeHandle } = require('react-native')
-        const scrollResponder = this.scrollView.getScrollResponder()
-        scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-          findNodeHandle(ref),
-          this.props.contentOffset || 10,
-          true
-        )
+        setTimeout(() => {
+          const { findNodeHandle } = require('react-native')
+          const scrollResponder = this.scrollView.getScrollResponder()
+          scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+            findNodeHandle(ref),
+            this.props.contentOffset || 10,
+            true
+          )
+        }, 5)
       }
     }
   }
